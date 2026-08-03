@@ -1,0 +1,54 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+client_id = "86a9c64a526e7336f9bc88ddc63b66d6"
+name = "Corvianaire designer"
+application_url = "https://example.com"
+embedded = true
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = "read_analytics_annotations,write_analytics_annotations,read_app_proxy,write_app_proxy,read_assigned_fulfillment_orders,write_assigned_fulfillment_orders,read_cart_transforms,write_cart_transforms,read_all_cart_transforms,read_validations,write_validations,read_channels,write_channels,read_checkout_and_accounts_configurations,write_checkout_and_accounts_configurations,read_checkout_branding_settings,write_checkout_branding_settings,write_checkouts,read_checkouts,read_custom_fulfillment_services,write_custom_fulfillment_services,read_custom_pixels,write_custom_pixels,read_customers,write_customers,read_customer_data_erasure,write_customer_data_erasure,read_customer_merge,write_customer_merge,read_delivery_customizations,write_delivery_customizations,read_price_rules,write_price_rules,read_discounts,write_discounts,read_discounts_allocator_functions,write_discounts_allocator_functions,write_draft_orders,read_draft_orders,read_files,write_files,read_fulfillment_constraint_rules,write_fulfillment_constraint_rules,read_fulfillments,write_fulfillments,write_inventory,read_inventory,write_inventory_transfers,read_inventory_transfers,read_locales,write_locales,read_metaobject_definitions,write_metaobject_definitions,read_metaobjects,write_metaobjects,read_online_store_navigation,write_online_store_navigation,read_online_store_pages,write_online_store_pages,write_order_edits,read_order_edits,read_orders,write_orders,write_packing_slip_templates,read_packing_slip_templates,read_payment_customizations,write_payment_customizations,read_product_feeds,write_product_feeds,read_products,write_products,read_publications,write_publications,read_purchase_options,write_purchase_options,write_theme_code,read_themes,write_themes,read_translations,write_translations,read_pixels,write_pixels,customer_read_orders,customer_write_orders"
+optional_scopes = [ ]
+use_legacy_install_flow = false
+
+[product.metafields.app.demo_info]
+type = "single_line_text_field"
+name = "Demo Source Info"
+description = "Tracks products created by the Shopify app template for development"
+
+  [product.metafields.app.demo_info.access]
+  admin = "merchant_read_write"
+
+[metaobjects.app.example]
+name = "Example"
+description = "An example metaobject definition created by this template"
+
+  [metaobjects.app.example.access]
+  admin = "merchant_read_write"
+
+[metaobjects.app.example.fields.title]
+name = "Title"
+type = "single_line_text_field"
+required = true
+
+[metaobjects.app.example.fields.description]
+name = "Description"
+type = "multi_line_text_field"
+
+[webhooks]
+api_version = "2026-07"
+
+  [[webhooks.subscriptions]]
+  uri = "/webhooks/app/uninstalled"
+  topics = [ "app/uninstalled" ]
+
+  [[webhooks.subscriptions]]
+  uri = "/webhooks/app/scopes_update"
+  topics = [ "app/scopes_update" ]
+
+[auth]
+redirect_urls = [ ]
+
+[build]
+include_config_on_deploy = true
+automatically_update_urls_on_dev = true
