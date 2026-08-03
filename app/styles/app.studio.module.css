@@ -1,0 +1,125 @@
+/* Google Fonts: Premium Serif and Clean Sans-Serif */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap');
+
+/* Main Studio Layout */
+.container {
+  display: flex;
+  height: 100vh;
+  background-color: #F8F6F2; /* Soft off-white luxury background */
+  font-family: 'Montserrat', -apple-system, sans-serif;
+  color: #2C2C2C;
+  overflow: hidden; /* Prevents window scroll; keeps focus on panels */
+}
+
+/* Left Tools Panel */
+.toolbar {
+  width: 260px;
+  padding: 30px 20px;
+  background-color: #FFFFFF;
+  border-right: 1px solid #EAE5DD;
+  box-shadow: 2px 0 15px rgba(0, 0, 0, 0.02);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 10;
+}
+
+.toolbar button {
+  width: 100%;
+  padding: 14px 16px;
+  background-color: #F8F6F2;
+  color: #2C2C2C;
+  border: 1px solid #EAE5DD;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  text-align: left;
+  transition: all 0.3s ease;
+}
+
+.toolbar button:hover {
+  background-color: #2C2C2C; /* Deep Charcoal */
+  color: #FFFFFF;
+  border-color: #2C2C2C;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(44, 44, 44, 0.15);
+}
+
+/* Center Canvas Area */
+.workspace {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  /* Adds a subtle architectural grid pattern to the workspace floor */
+  background-image: radial-gradient(#D9CBB6 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Artboard/Canvas */
+.canvas {
+  width: 100%;
+  max-width: 500px;
+  height: 600px;
+  background-color: #FFFFFF;
+  border-radius: 16px;
+  border: 1px solid #EAE5DD;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  box-shadow: 0 12px 40px rgba(44, 44, 44, 0.06); /* Heavy, soft shadow to lift it off the grid */
+  transition: transform 0.3s ease;
+}
+
+.canvas:hover {
+  transform: scale(1.01);
+}
+
+.shirt {
+  font-size: 160px;
+  color: #2C2C2C;
+  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.08)); /* Gives the apparel depth */
+  transition: all 0.3s ease;
+}
+
+/* Right Configuration Panel */
+.properties {
+  width: 300px; /* Slightly wider for color swatches and sliders */
+  padding: 30px 24px;
+  background-color: #FFFFFF;
+  border-left: 1px solid #EAE5DD;
+  box-shadow: -2px 0 15px rgba(0, 0, 0, 0.02);
+  z-index: 10;
+  overflow-y: auto;
+}
+
+/* Responsive Handling for Smaller Screens */
+@media (max-width: 1024px) {
+  .container {
+    flex-direction: column;
+    height: auto;
+    min-height: 100vh;
+  }
+  
+  .toolbar, .properties {
+    width: 100%;
+    border-right: none;
+    border-left: none;
+    border-bottom: 1px solid #EAE5DD;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .toolbar button {
+    width: auto;
+    flex: 1;
+  }
+  
+  .workspace {
+    padding: 20px;
+  }
+}
