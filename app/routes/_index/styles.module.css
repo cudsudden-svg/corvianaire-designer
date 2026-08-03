@@ -1,73 +1,431 @@
-.index {
+/* Google Fonts Import */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400;1,600&display=swap');
+
+/* ==========================================================
+   CORVIANAIRE STUDIO - BRAND PALETTE & TYPOGRAPHY
+   Primary:     #2C2C2C (Deep Charcoal)
+   Secondary:   #D9CBB6 (Soft Beige)
+   Accent 1:    #C97A7E (Dusty Rose)
+   Accent 2:    #A3B18A (Sage Green)
+   Background:  #F8F6F2 (Off-White)
+   Highlight:   #D4AF37 (Gold Metallic)
+   ========================================================== */
+
+/* Layout & Base Structure */
+.page {
+  display: flex;
+  min-height: 100vh;
+  font-family: 'Montserrat', -apple-system, sans-serif;
+  background-color: #F8F6F2;
+}
+
+/* ============================
+   LEFT PANEL (Editorial Dark Section)
+   ============================ */
+.leftPanel {
+  flex: 1;
+  background: radial-gradient(circle at center 60%, #2C2C2C 0%, #1C1C1C 65%, #141414 100%);
+  color: #F8F6F2;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 3.5rem 4rem;
+  position: relative;
+  overflow: hidden;
+  max-width: 50%;
+}
+
+/* Diagonal Watermark (Serif Editorial Styling) */
+.watermark {
+  position: absolute;
+  top: 45%;
+  left: 45%;
+  transform: translate(-50%, -50%) rotate(-28deg);
+  font-family: 'Playfair Display', serif;
+  font-size: 13vw;
+  font-weight: 800;
+  font-style: italic;
+  color: rgba(217, 203, 182, 0.04);
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 1;
+  letter-spacing: 0.08em;
+  user-select: none;
+  text-transform: uppercase;
+}
+
+.leftContent {
+  position: relative;
+  z-index: 2;
+  max-width: 460px;
+}
+
+/* Brand Header Logo */
+.brand {
+  display: flex;
   align-items: center;
+  gap: 14px;
+  margin-bottom: 2.5rem;
+}
+
+.brandText {
+  display: flex;
+  flex-direction: column;
+}
+
+.brandName {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: #F8F6F2;
+}
+
+.brandSub {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 400;
+  letter-spacing: 5px;
+  color: #D9CBB6;
+}
+
+/* Editorial Headlines */
+.title {
+  font-family: 'Playfair Display', serif;
+  font-size: 3.6rem;
+  font-weight: 700;
+  line-height: 1.1;
+  margin: 0 0 1.25rem 0;
+  letter-spacing: -0.01em;
+  color: #F8F6F2;
+}
+
+.titleHighlight {
+  font-style: italic; /* Editorial italic accent */
+  font-weight: 600;
+  color: #D4AF37; /* Gold Metallic */
+  text-shadow: 0 0 25px rgba(212, 175, 55, 0.35);
+}
+
+.divider {
+  width: 48px;
+  height: 2px;
+  background: linear-gradient(90deg, #D4AF37, transparent);
+  border: none;
+  margin: 0 0 1.25rem 0;
+}
+
+.subtitle {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 300; /* Lighter weight for secondary text */
+  color: #D9CBB6;
+  font-size: 1rem;
+  line-height: 1.75;
+  letter-spacing: 0.02em;
+}
+
+/* ============================
+   HERO CANVAS GRAPHIC (Floating Card)
+   ============================ */
+.graphicContainer {
+  position: relative;
+  z-index: 2;
   display: flex;
   justify-content: center;
-  height: 100%;
+  align-items: center;
   width: 100%;
-  text-align: center;
-  padding: 1rem;
+  margin-top: 1.5rem;
 }
 
-.heading,
-.text {
-  padding: 0;
+.heroImage {
+  width: 100%;
+  max-width: 340px;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 16px;
+  background-color: #FFFFFF;
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.6),
+    0 0 0 1px rgba(217, 203, 182, 0.25),
+    0 0 30px rgba(212, 175, 55, 0.2);
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+    box-shadow: 
+      0 20px 40px rgba(0, 0, 0, 0.6),
+      0 0 0 1px rgba(217, 203, 182, 0.25),
+      0 0 30px rgba(212, 175, 55, 0.2);
+  }
+  50% {
+    transform: translateY(-10px);
+    box-shadow: 
+      0 30px 50px rgba(0, 0, 0, 0.7),
+      0 0 0 1px rgba(212, 175, 55, 0.4),
+      0 0 45px rgba(212, 175, 55, 0.35);
+  }
+  100% {
+    transform: translateY(0px);
+    box-shadow: 
+      0 20px 40px rgba(0, 0, 0, 0.6),
+      0 0 0 1px rgba(217, 203, 182, 0.25),
+      0 0 30px rgba(212, 175, 55, 0.2);
+  }
+}
+
+/* ============================
+   RIGHT PANEL (Clean Sans UI Section)
+   ============================ */
+.rightPanel {
+  flex: 1;
+  background-color: #F8F6F2;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  max-width: 50%;
+}
+
+.topBar {
+  display: flex;
+  justify-content: flex-end;
+  padding: 2rem 3rem;
+}
+
+.langSelector {
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #2C2C2C;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.formContainer {
+  max-width: 400px;
+  width: 100%;
+  margin: auto;
+  padding: 0 2rem 4rem 2rem;
+}
+
+.formHeader {
+  margin-bottom: 2rem;
+}
+
+.formHeader h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.1rem;
+  color: #2C2C2C;
+  margin: 0 0 0.4rem 0;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.formHeader p {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  color: #666666;
+  font-size: 0.9rem;
   margin: 0;
-}
-
-.text {
-  font-size: 1.2rem;
-  padding-bottom: 2rem;
-}
-
-.content {
-  display: grid;
-  gap: 2rem;
 }
 
 .form {
   display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  margin: 0 auto;
-  gap: 1rem;
+  flex-direction: column;
+  gap: 1.25rem;
 }
 
-.label {
-  display: grid;
-  gap: 0.2rem;
-  max-width: 20rem;
-  text-align: left;
-  font-size: 1rem;
-}
-
-.input {
-  padding: 0.4rem;
-}
-
-.button {
-  padding: 0.4rem;
-}
-
-.list {
-  list-style: none;
-  padding: 0;
-  padding-top: 3rem;
-  margin: 0;
+.inputGroup {
   display: flex;
-  gap: 2rem;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
-.list > li {
-  max-width: 20rem;
-  text-align: left;
+.inputGroup label {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #2C2C2C;
 }
 
-@media only screen and (max-width: 50rem) {
-  .list {
-    display: block;
+.inputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.inputIcon {
+  position: absolute;
+  left: 14px;
+  color: #8C8C8C;
+}
+
+.eyeIcon {
+  position: absolute;
+  right: 14px;
+  background: none;
+  border: none;
+  color: #8C8C8C;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+.inputWrapper input {
+  font-family: 'Montserrat', sans-serif;
+  width: 100%;
+  padding: 0.8rem 1rem 0.8rem 2.6rem;
+  border: 1px solid #D9CBB6;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  color: #2C2C2C;
+  outline: none;
+  transition: all 0.2s ease;
+  background-color: #FFFFFF;
+}
+
+.inputWrapper input::placeholder {
+  color: #A0A0A0;
+  font-weight: 300;
+}
+
+.inputWrapper input:focus {
+  border-color: #C97A7E;
+  box-shadow: 0 0 0 4px rgba(201, 122, 126, 0.15);
+}
+
+.forgotPassword {
+  text-align: right;
+  margin-top: -0.25rem;
+}
+
+.forgotPassword a {
+  font-family: 'Montserrat', sans-serif;
+  color: #C97A7E;
+  font-size: 0.8rem;
+  text-decoration: none;
+  font-weight: 500;
+  font-style: italic; /* Subtle italic accent */
+}
+
+.forgotPassword a:hover {
+  text-decoration: underline;
+  color: #B5676B;
+}
+
+/* Action Buttons */
+.primaryBtn {
+  font-family: 'Montserrat', sans-serif;
+  width: 100%;
+  background-color: #2C2C2C;
+  color: #F8F6F2;
+  border: 1px solid #D4AF37;
+  padding: 0.875rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 0.5rem;
+  box-shadow: 0 4px 12px rgba(44, 44, 44, 0.15);
+}
+
+.primaryBtn:hover {
+  background-color: #1A1A1A;
+  border-color: #E5C158;
+  box-shadow: 0 6px 16px rgba(212, 175, 55, 0.25);
+  transform: translateY(-1px);
+}
+
+.separator {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 1.5rem 0;
+  color: #8C8C8C;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.8rem;
+  font-style: italic;
+}
+
+.separator::before,
+.separator::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid #D9CBB6;
+}
+
+.separator span {
+  padding: 0 1rem;
+}
+
+.shopifyBtn {
+  font-family: 'Montserrat', sans-serif;
+  width: 100%;
+  background-color: #FFFFFF;
+  color: #2C2C2C;
+  border: 1px solid #D9CBB6;
+  padding: 0.875rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.2s ease;
+}
+
+.shopifyBtn:hover {
+  background-color: #F0ECE3;
+  border-color: #C5B59E;
+}
+
+.signupPrompt {
+  font-family: 'Montserrat', sans-serif;
+  text-align: center;
+  margin-top: 2rem;
+  color: #666666;
+  font-size: 0.85rem;
+}
+
+.signupPrompt a {
+  color: #C97A7E;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.signupPrompt a:hover {
+  text-decoration: underline;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 900px) {
+  .page {
+    flex-direction: column;
   }
-
-  .list > li {
-    padding-bottom: 1rem;
+  .leftPanel, .rightPanel {
+    max-width: 100%;
+  }
+  .leftPanel {
+    padding: 2.5rem 2rem;
+  }
+  .watermark {
+    font-size: 22vw;
+  }
+  .formContainer {
+    padding: 2rem 1.5rem;
   }
 }
