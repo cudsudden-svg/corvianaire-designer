@@ -1,0 +1,212 @@
+/* Google Fonts: Premium Serif and Clean Sans-Serif */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap');
+
+/* Base App Layout */
+.appContainer {
+  display: flex;
+  min-height: 100vh;
+  background-color: #F8F6F2; /* Soft off-white luxury background */
+  font-family: 'Montserrat', -apple-system, sans-serif;
+  color: #2C2C2C;
+}
+
+/* Sidebar Styling */
+.sidebar {
+  width: 260px;
+  background-color: #1F1F1F; /* Deep Charcoal */
+  color: #FFFFFF;
+  padding: 40px 24px;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid rgba(217, 203, 182, 0.15);
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+
+.sidebarBrand {
+  padding-bottom: 30px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.sidebarBrand h2 {
+  margin: 0;
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: #F8F6F2;
+}
+
+.sidebarBrand span {
+  display: block;
+  letter-spacing: 5px;
+  font-size: 11px;
+  color: #D9CBB6; /* Soft Beige */
+  margin-top: 6px;
+  text-transform: uppercase;
+}
+
+/* Navigation */
+.navMenu {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.navMenu a {
+  color: #D9CBB6;
+  text-decoration: none;
+  cursor: pointer;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.25s ease;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.navMenu a:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #FFFFFF;
+  transform: translateX(4px);
+}
+
+.active {
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.15) 0%, rgba(201, 122, 126, 0.1) 100%);
+  color: #D4AF37 !important; /* Gold Metallic */
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  font-weight: 600;
+}
+
+/* Main Content Area */
+.mainWrapper {
+  flex: 1;
+  padding: 40px 50px;
+  overflow-y: auto;
+}
+
+.topHeader {
+  margin-bottom: 40px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #EAE5DD;
+}
+
+.topHeader h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 36px;
+  font-weight: 700;
+  color: #2C2C2C;
+  margin: 0;
+}
+
+/* Stats Section */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin: 30px 0;
+}
+
+.statCard {
+  background: #FFFFFF;
+  padding: 25px;
+  border-radius: 16px;
+  border: 1px solid #EAE5DD;
+  box-shadow: 0 4px 20px rgba(44, 44, 44, 0.03);
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.statCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(44, 44, 44, 0.08);
+  border-color: #D9CBB6;
+}
+
+.statCard strong {
+  font-family: 'Playfair Display', serif;
+  font-size: 32px;
+  color: #2C2C2C;
+}
+
+/* Quick Actions Section */
+.actionsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+.actionCard {
+  background: #FFFFFF;
+  padding: 25px;
+  border-radius: 16px;
+  border: 1px solid #EAE5DD;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 10px rgba(44, 44, 44, 0.02);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.actionCard:hover {
+  background-color: #FCFBF9;
+  border-color: #D4AF37;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(212, 175, 55, 0.12);
+}
+
+/* Design Gallery Section */
+.designCard {
+  background: #FFFFFF;
+  margin-top: 20px;
+  padding: 0; /* Removed padding to allow edge-to-edge images/mockups */
+  border-radius: 16px;
+  border: 1px solid #EAE5DD;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(44, 44, 44, 0.03);
+  transition: all 0.3s ease;
+}
+
+.designCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(44, 44, 44, 0.08);
+  border-color: #D9CBB6;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1200px) {
+  .statsGrid, .actionsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .appContainer {
+    flex-direction: column;
+  }
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+    padding: 20px;
+  }
+  .navMenu {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .mainWrapper {
+    padding: 20px;
+  }
+  .statsGrid, .actionsGrid {
+    grid-template-columns: 1fr;
+  }
+}
