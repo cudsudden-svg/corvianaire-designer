@@ -25,6 +25,12 @@
   },
   "dependencies": {
     "@prisma/client": "^6.16.3",
+    "@radix-ui/react-dropdown-menu": "^2.1.24",
+    "@radix-ui/react-scroll-area": "^1.2.18",
+    "@radix-ui/react-separator": "^1.1.15",
+    "@radix-ui/react-slider": "^1.4.7",
+    "@radix-ui/react-tabs": "^1.1.21",
+    "@radix-ui/react-tooltip": "^1.2.16",
     "@react-router/dev": "^7.12.0",
     "@react-router/fs-routes": "^7.12.0",
     "@react-router/node": "^7.12.0",
@@ -34,12 +40,18 @@
     "@shopify/polaris-icons": "^9.3.1",
     "@shopify/shopify-app-react-router": "^1.2.1",
     "@shopify/shopify-app-session-storage-prisma": "^9.0.0",
+    "clsx": "^2.1.1",
+    "fabric": "^7.4.0",
+    "framer-motion": "^12.43.0",
     "isbot": "^5.1.31",
+    "lucide-react": "^1.28.0",
     "prisma": "^6.16.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router": "^7.12.0",
-    "vite-tsconfig-paths": "^5.1.4"
+    "tailwind-merge": "^3.6.0",
+    "vite-tsconfig-paths": "^5.1.4",
+    "zustand": "^5.0.14"
   },
   "devDependencies": {
     "@shopify/api-codegen-preset": "^1.2.0",

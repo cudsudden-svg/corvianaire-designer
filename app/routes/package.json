@@ -1,0 +1,16 @@
+{
+  "name": "corvianaire-studio",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "admin:dev": "npm run dev --workspace=apps/admin",
+    "admin:build": "npm run build --workspace=apps/admin",
+    "widget:dev": "npm run dev --workspace=apps/storefront-widget",
+    "widget:build": "npm run build --workspace=apps/storefront-widget",
+    "build": "npm run widget:build && npm run admin:build",
+    "typecheck": "npm run typecheck --workspace=apps/admin && npm run typecheck --workspace=apps/storefront-widget"
+  }
+}

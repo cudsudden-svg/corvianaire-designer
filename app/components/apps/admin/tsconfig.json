@@ -1,0 +1,34 @@
+{
+  "include": ["**/*.ts", "**/*.tsx", "vite.config.ts"],
+  "compilerOptions": {
+    // --- Module system ---
+    "lib": ["DOM", "DOM.Iterable", "ES2022"],
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "jsx": "react-jsx",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "resolveJsonModule": true,
+    "target": "ES2022",
+    "skipLibCheck": true,
+
+    // --- Path aliases: keeps imports clean as the app grows ---
+    // e.g. `import { useDesignStore } from "~/features/canvas-editor/store"`
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["./app/*"],
+      "@corvianaire/shared": ["../../packages/shared/src/index.ts"],
+      "@corvianaire/shared/*": ["../../packages/shared/src/*"]
+    },
+
+    // --- Strict typing (Phase 25: Code Quality requirement) ---
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "noFallthroughCasesInSwitch": true,
+    "forceConsistentCasingInFileNames": true,
+
+    // Remix takes care of building/transpiling; TS is used for type-checking only.
+    "noEmit": true
+  }
+}

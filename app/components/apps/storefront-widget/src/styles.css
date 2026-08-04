@@ -1,0 +1,254 @@
+#corvianaire-studio-root {
+  font-family: sans-serif;
+  max-width: 560px;
+}
+
+.corvianaire-studio-product-title {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.corvianaire-view-tabs {
+  display: flex;
+  gap: 0.25rem;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.corvianaire-view-tabs button {
+  padding: 0.4rem 0.75rem;
+  border: 1px solid #ccc;
+  background: #f7f7f7;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.corvianaire-view-tabs button.is-active {
+  background: #111;
+  color: #fff;
+  border-color: #111;
+}
+
+.corvianaire-canvas-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.corvianaire-toolbar-divider {
+  width: 1px;
+  height: 1.5rem;
+  background: #ddd;
+  margin: 0 0.25rem;
+}
+
+.corvianaire-zoom-readout {
+  min-width: 3.5em;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  font-size: 0.9em;
+}
+
+.corvianaire-dpi-warning {
+  background: #fff4e5;
+  border: 1px solid #ff9f43;
+  color: #7a4a00;
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.85em;
+  margin-bottom: 0.5rem;
+}
+
+.corvianaire-variant-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.corvianaire-variant-option-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.corvianaire-variant-option-group span:first-child {
+  font-size: 0.8rem;
+  font-weight: 600;
+  min-width: 3.5rem;
+}
+
+.corvianaire-variant-swatch {
+  padding: 0.3rem 0.7rem;
+  border: 1px solid #ccc;
+  background: #f7f7f7;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.corvianaire-variant-swatch.is-active {
+  background: #111;
+  color: #fff;
+  border-color: #111;
+}
+
+.corvianaire-variant-swatch:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.corvianaire-price-display {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.corvianaire-price-display small {
+  font-weight: 400;
+  opacity: 0.6;
+  font-size: 0.7em;
+}
+
+.corvianaire-canvas-stage canvas {
+  border: 1px solid #ddd;
+}
+
+.corvianaire-canvas-loading,
+.corvianaire-studio-loading,
+.corvianaire-studio-error {
+  opacity: 0.7;
+  font-size: 0.9em;
+}
+
+.corvianaire-tool-tabs {
+  display: flex;
+  gap: 0.25rem;
+  margin: 0.75rem 0 0.5rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.corvianaire-tool-tabs button {
+  padding: 0.4rem 0.75rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+}
+
+.corvianaire-tool-tabs button.is-active {
+  border-bottom-color: #111;
+  font-weight: 600;
+}
+
+.corvianaire-tool-panel {
+  padding: 0.5rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.corvianaire-text-style-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  align-items: center;
+  padding-top: 0.4rem;
+}
+
+.corvianaire-text-style-controls label {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.75rem;
+  gap: 0.15rem;
+}
+
+.corvianaire-text-style-row {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.corvianaire-text-style-row button {
+  min-width: 1.8rem;
+  border: 1px solid #ccc;
+  background: #f7f7f7;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.corvianaire-text-style-row button.is-active {
+  background: #111;
+  color: #fff;
+  border-color: #111;
+}
+
+.corvianaire-curved-text-toggle {
+  flex-direction: row !important;
+  align-items: center;
+  gap: 0.35rem !important;
+  opacity: 0.55;
+}
+
+.corvianaire-clipart-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(52px, 1fr));
+  gap: 0.4rem;
+  margin-bottom: 0.75rem;
+}
+
+.corvianaire-clipart-item {
+  border: 1px solid #ddd;
+  background: #fff;
+  border-radius: 4px;
+  padding: 0.25rem;
+  cursor: pointer;
+}
+
+.corvianaire-clipart-item img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.corvianaire-clipart-category h4 {
+  margin: 0.5rem 0 0.25rem;
+  font-size: 0.85rem;
+}
+
+.corvianaire-error {
+  color: #b3261e;
+}
+
+.corvianaire-add-to-cart {
+  margin-top: 0.75rem;
+}
+
+.corvianaire-add-to-cart-button {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  background: #111;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.corvianaire-add-to-cart-button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.corvianaire-add-to-cart-status {
+  margin: 0.5rem 0 0;
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+.corvianaire-add-to-cart-success {
+  color: #1a7f37;
+}

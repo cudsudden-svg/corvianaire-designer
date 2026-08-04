@@ -1,0 +1,333 @@
+// ═══════════════════════════════════════════════════════════════════════
+// Corvianaire Studio — Prisma schema
+//
+// IMPORTANT: This database NEVER stores Shopify product/variant catalog
+// data (title, price, images, inventory, etc). That data is always
+// fetched live from Shopify's Admin/Storefront GraphQL APIs (Phase 3:
+// Product Loading — "never store products manually").
+//
+// This schema exists only for data that is genuinely app-owned:
+//   - customer designs and their canvas state
+//   - uploaded assets
+//   - clipart library
+//   - configurable pricing rules
+//   - print zone geometry (safe/bleed areas) keyed by Shopify product ID
+//   - Shopify session storage (required by @shopify/shopify-app-remix)
+// ═══════════════════════════════════════════════════════════════════════
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  // Dev default is SQLite (zero setup). For production, switch this line to:
+  //   provider = "postgresql"
+  // and point DATABASE_URL at your Postgres instance. Every model below is
+  // written to be portable across both — no SQLite-only or Postgres-only
+  // types are used.
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ─────────────────────────────────────────────────────────────
+// Shopify session storage (required by shopify-app-remix)
+// ─────────────────────────────────────────────────────────────
+model Session {
+  id            String    @id
+  shop          String
+  state         String
+  isOnline      Boolean   @default(false)
+  scope         String?
+  expires       DateTime?
+  accessToken   String
+  userId        BigInt?
+  firstName     String?
+  lastName      String?
+  email         String?
+  accountOwner  Boolean   @default(false)
+  locale        String?
+  collaborator  Boolean?  @default(false)
+  emailVerified Boolean?  @default(false)
+
+  @@index([shop])
+}
+
+// ─────────────────────────────────────────────────────────────
+// PrintZone — safe/bleed area geometry for a print location on a
+// product. Keyed by Shopify product ID + view name (front/back/etc),
+// NOT hardcoded per product in app code (Phase 14 + the "never
+// hardcode products" rule). Merchants/admin configure these once per
+// product; the canvas editor reads them at runtime.
+// ─────────────────────────────────────────────────────────────
+model PrintZone {
+  id                String   @id @default(cuid())
+  shopDomain        String
+  shopifyProductId  String // gid://shopify/Product/...
+  viewName          String // "front" | "back" | "left-sleeve" | "right-sleeve" | "hood" | "neck-label"
+
+  // Safe area — guaranteed-visible print bounds, in px relative to the
+  // canvas/mockup coordinate space the storefront widget renders (see
+  // apps/storefront-widget). This is a DESIGN-SPACE unit, not a
+  // production measurement — see physicalWidthIn/physicalHeightIn below
+  // for the real-world size DPI is computed against.
+  safeAreaX      Float
+  safeAreaY      Float
+  safeAreaWidth  Float
+  safeAreaHeight Float
+
+  // Bleed area — extended cut-tolerance bounds (must be >= safe area),
+  // also in canvas px.
+  bleedAreaX      Float
+  bleedAreaY      Float
+  bleedAreaWidth  Float
+  bleedAreaHeight Float
+
+  // ─── Production specification (Phase 15 + 17) ───
+  // Real-world size of the SAFE area, in inches. This is the number that
+  // matters for DPI math — never derive physical size from canvas px,
+  // since canvas px is a design-space convenience, not a production
+  // measurement. Sourced from supplier/production specs where available
+  // (see Supplier model below); sensible defaults otherwise.
+  physicalWidthIn  Float @default(12)
+  physicalHeightIn Float @default(16)
+
+  // Bleed margin beyond the safe area, in inches (e.g. 0.125" standard).
+  bleedMarginIn Float @default(0.125)
+
+  // Target print resolution. requiredWidthPx/HeightPx (physicalWidthIn *
+  // targetDpi) is computed at the application layer, not stored — it's
+  // fully derived from these two fields, so there's nothing to keep in
+  // sync if either changes.
+  targetDpi Int @default(300)
+
+  // Comma-separated list of accepted production file formats for this
+  // zone, e.g. "png,svg" for a screen-print zone vs "png" only for an
+  // embroidery digitization zone. Kept as a simple CSV string for the
+  // same SQLite/Postgres portability reason as ClipartAsset.tags.
+  allowedFileFormats String @default("png,jpg,svg")
+
+  // Which supplier fulfills this print zone's production (Apliiq,
+  // Printful, etc.) — null falls back to the shop's default supplier.
+  // Modular on purpose: adding a new supplier is a new Supplier row +
+  // a new SupplierProvider implementation (see
+  // app/features/suppliers/), never a PrintZone schema change.
+  supplierId String?
+  supplier   Supplier? @relation(fields: [supplierId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([shopDomain, shopifyProductId, viewName])
+  @@index([shopDomain, shopifyProductId])
+}
+
+// ─────────────────────────────────────────────────────────────
+// Supplier — one row per fulfillment partner a shop has configured
+// (Phase 24: Future Integrations, brought forward because print zones
+// need to reference a supplier's production specs). Credentials/config
+// are stored as an encrypted-at-rest-capable opaque string; this schema
+// never assumes a specific supplier's field shape.
+// ─────────────────────────────────────────────────────────────
+model Supplier {
+  id         String  @id @default(cuid())
+  shopDomain String
+  name       String // merchant-facing label, e.g. "Apliiq — Primary"
+  slug       String // matches a SupplierProvider implementation, e.g. "apliiq"
+  isActive   Boolean @default(true)
+  isDefault  Boolean @default(false)
+
+  // Opaque, provider-specific config (API base URL, account ID, etc.).
+  // NEVER store raw API keys/secrets here — see
+  // app/features/suppliers/types.ts for the secret-handling contract.
+  configJson String @default("{}")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  printZones PrintZone[]
+
+  @@unique([shopDomain, slug])
+  @@index([shopDomain, isActive])
+}
+
+// ─────────────────────────────────────────────────────────────
+// PricingRule — configurable additive pricing (Phase 11).
+// Merchant-editable via the admin dashboard; never hardcoded constants.
+// ─────────────────────────────────────────────────────────────
+model PricingRule {
+  id         String  @id @default(cuid())
+  shopDomain String
+  label      String // e.g. "Front print", "Embroidery"
+  ruleType   PricingRuleType
+  // Optional scoping — a rule can apply globally, to one product, or to
+  // one print view. Null means "applies wherever ruleType matches".
+  shopifyProductId String?
+  viewName         String?
+
+  priceDeltaCents Int // additive amount in cents, e.g. 300 = +$3.00
+  isActive        Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([shopDomain, isActive])
+}
+
+enum PricingRuleType {
+  PRINT_LOCATION // charged per print zone used (front/back/sleeve/etc)
+  TECHNIQUE // e.g. embroidery vs standard print
+  FONT_TIER // e.g. premium font surcharge
+  ASSET_TYPE // e.g. uploaded image vs clipart
+}
+
+// ─────────────────────────────────────────────────────────────
+// ClipartCategory / ClipartAsset — Phase 8
+// ─────────────────────────────────────────────────────────────
+model ClipartCategory {
+  id     String         @id @default(cuid())
+  name   String         @unique // "Animals", "Nature", "Sports", etc.
+  slug   String         @unique
+  assets ClipartAsset[]
+}
+
+model ClipartAsset {
+  id         String          @id @default(cuid())
+  name       String
+  tags       String // comma-separated search tags (kept simple/portable across SQLite & Postgres)
+  fileUrl    String // resolved via the active StorageProvider
+  thumbUrl   String
+  categoryId String
+  category   ClipartCategory @relation(fields: [categoryId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@index([categoryId])
+}
+
+// ─────────────────────────────────────────────────────────────
+// UploadedAsset — a customer's uploaded image (Phase 7 + 19)
+// ─────────────────────────────────────────────────────────────
+model UploadedAsset {
+  id           String   @id @default(cuid())
+  shopDomain   String
+  customerId   String? // Shopify customer ID if known, null for guest sessions
+  fileUrl      String
+  thumbUrl     String
+  originalName String
+  mimeType     String
+  widthPx      Int
+  heightPx     Int
+  fileSizeKb   Int
+
+  createdAt DateTime @default(now())
+
+  designViews DesignView[] // where this asset has been used
+
+  @@index([shopDomain, customerId])
+}
+
+// ─────────────────────────────────────────────────────────────
+// Design — a full saved customization for one product/variant
+// (Phase 12: Design Persistence). One Design has many DesignViews
+// (front/back/sleeve/etc — Phase 4's independent per-view state).
+// ─────────────────────────────────────────────────────────────
+model Design {
+  id         String  @id @default(cuid())
+  shopDomain String
+  customerId String? // null while a guest is still designing pre-account
+
+  // Set by the browser on first canvas interaction and persisted
+  // client-side (cookie/localStorage), so a guest's DRAFT can be found
+  // again on a later visit before they have an account. Cleared/ignored
+  // once customerId is set for a design.
+  guestSessionId String?
+
+  shopifyProductId String
+  shopifyVariantId String
+
+  customerNotes String?
+
+  // Set only on an explicit "Save" checkpoint — null for the one
+  // autosaved DRAFT per (customer-or-guest, product, variant).
+  name String?
+
+  // Computed price snapshot (base + pricing rule deltas at last save).
+  computedPriceCents Int?
+
+  status DesignStatus @default(DRAFT)
+
+  // ─── Commerce tracking (Stage 7) ───
+  // Set by webhooks.orders.create once the design's line item is found on
+  // a real Shopify order — this is what flips status to ORDERED. A design
+  // can be SAVED (customer saved/added to cart) without ever reaching this
+  // if the order webhook hasn't arrived yet, or if checkout was abandoned.
+  shopifyOrderId String?
+
+  // Result of SupplierProvider#submitProductionOrder — one submission per
+  // design (the interface takes all views' production files in a single
+  // call; see app/features/suppliers/types.ts). Null until submission
+  // succeeds; a failed/skipped submission (e.g. missing production files)
+  // leaves this null rather than storing a placeholder.
+  supplierOrderId       String?
+  productionSubmittedAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  views DesignView[]
+
+  @@index([shopDomain, customerId])
+  @@index([shopDomain, guestSessionId])
+  @@index([shopifyProductId])
+  @@index([shopifyOrderId])
+}
+
+enum DesignStatus {
+  DRAFT // still being edited
+  SAVED // explicitly saved by the customer, reopenable
+  ORDERED // attached to a placed order (Phase 17)
+}
+
+// ─────────────────────────────────────────────────────────────
+// DesignView — one canvas's worth of state for a single print
+// location within a Design (e.g. the "front" canvas). Stores the
+// raw Fabric.js canvas JSON plus a rendered preview image.
+// ─────────────────────────────────────────────────────────────
+model DesignView {
+  id       String @id @default(cuid())
+  designId String
+  design   Design @relation(fields: [designId], references: [id], onDelete: Cascade)
+
+  viewName String // "front" | "back" | "left-sleeve" | ... (matches PrintZone.viewName)
+
+  // Fabric.js canvas.toJSON() output for this view. Stored as text so it
+  // stays portable between SQLite and Postgres (no native JSON column
+  // dependency); parsed/serialized at the application layer.
+  canvasJson String
+
+  previewImageUrl String? // generated preview (Phase 13), set after render
+
+  // false = previewImageUrl is a fast client-side canvas.toDataURL()
+  // snapshot written on autosave; true = it's been overwritten by a
+  // production-quality render. Distinguishes "good enough to show the
+  // customer while they edit" from "what actually got used for the
+  // production file" without storing the image twice.
+  previewIsFinal Boolean @default(false)
+
+  // ─── Production/fulfillment tracking (Phase 17 groundwork) ───
+  // Set once a print-ready production file has been generated for this
+  // view (Stage 7). Kept separate from previewImageUrl since a preview
+  // (screen-res, for the customer/cart) and a production file
+  // (print-res, for the supplier) are never the same asset.
+  productionFileUrl String?
+  productionFileGeneratedAt DateTime?
+
+  // Every uploaded image actually placed on this view's canvas, for
+  // traceability / production file regeneration (Phase 17).
+  uploadedAssets UploadedAsset[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([designId, viewName])
+}

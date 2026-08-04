@@ -1,0 +1,46 @@
+# Shopify app configuration.
+# Client ID / secret come from your Partner Dashboard app — never commit real
+# secrets here; this file is safe to commit, actual keys live in .env (gitignored).
+client_id = "REPLACE_WITH_YOUR_CLIENT_ID"
+name = "Corvianaire Studio"
+handle = "corvianaire-studio"
+application_url = "https://REPLACE_WITH_YOUR_APP_URL"
+embedded = true
+
+[build]
+automatically_update_urls_on_dev = true
+dev_store_url = "REPLACE_WITH_YOUR_DEV_STORE.myshopify.com"
+
+[access_scopes]
+# Minimum scopes needed for Stage 1–2 (product read + files).
+# Extended in later stages: write_products (variant metafield writes for
+# print-zone config), write_orders (order metafield writes in Stage 7).
+scopes = "read_products,read_product_listings,write_files,read_files,unauthenticated_read_product_listings"
+use_legacy_install_flow = false
+
+[auth]
+redirect_urls = [
+  "https://REPLACE_WITH_YOUR_APP_URL/auth/callback",
+  "https://REPLACE_WITH_YOUR_APP_URL/auth/shopify/callback",
+  "https://REPLACE_WITH_YOUR_APP_URL/api/auth/callback"
+]
+
+[webhooks]
+api_version = "2024-10"
+
+  [[webhooks.subscriptions]]
+  topics = ["app/uninstalled"]
+  uri = "/webhooks/app/uninstalled"
+
+  [[webhooks.subscriptions]]
+  # Wired up in Stage 7 (Order Integration) — placeholder subscription so the
+  # route exists and the shape is right from the start.
+  topics = ["orders/create"]
+  uri = "/webhooks/orders/create"
+
+[app_proxy]
+# Powers the customer-facing storefront widget (design editor embedded on
+# the product page) via a proxied route, set up in Stage 5.
+url = "https://REPLACE_WITH_YOUR_APP_URL/proxy"
+subpath = "studio"
+prefix = "apps"

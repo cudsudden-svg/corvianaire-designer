@@ -1,0 +1,6 @@
+# Theme App Extension config.
+# `shopify app generate extension` scaffolds this automatically when run
+# for real — this is hand-written to match that shape so the block below
+# is ready to register once the extension is created via the CLI.
+name = "Product Customizer"
+type = "theme"
